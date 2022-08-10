@@ -1,8 +1,8 @@
 import { Switch, Route } from "react-router-dom";
 
 import { Home } from "../Home";
-import { Page2 } from "../Page2";
 import { page1Routes } from "./Page1Routes";
+import { page2Routes } from "./Page2Routes";
 
 export const Router = () => {
   return (
@@ -29,9 +29,24 @@ export const Router = () => {
           </Switch>
         )}
       />
-      <Route path="/page2">
-        <Page2 />
-      </Route>
+      <Route
+        path="/page2"
+        //propsから必要な値(url)を取り出す
+        render={({ match: { url } }) => (
+          <Switch>
+            {/** page2Routesのオブジェクトをmapを使用して展開 */}
+            {page2Routes.map((route) => (
+              <Route
+                key={route.path}
+                exact={route.exact}
+                path={`${url}${route.path}`}
+              >
+                {route.children}
+              </Route>
+            ))}
+          </Switch>
+        )}
+      />
     </Switch>
   );
 };
